@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 		
 		getActionBar().hide();
 		
-		mRipple = new RippleDrawableComp(Color.BLACK, 100, 20, 500, getResources().getDrawable(R.drawable.ic_launcher), mButton2);
+		mRipple = new RippleDrawableComp(Color.BLACK, 20, 20, 1000, getResources().getDrawable(R.drawable.ic_launcher), mButton2);
 		mRipple.init();
 		mButton2.setBackgroundDrawable(mRipple);
 	}

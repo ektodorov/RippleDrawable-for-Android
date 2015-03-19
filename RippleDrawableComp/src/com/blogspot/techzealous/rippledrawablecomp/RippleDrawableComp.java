@@ -4,9 +4,12 @@ import java.lang.ref.WeakReference;
 
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.RadialGradient;
 import android.graphics.Rect;
+import android.graphics.Shader.TileMode;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,11 +22,13 @@ public class RippleDrawableComp extends Drawable {
 	private WeakReference<View> mWeakView;
 	private Drawable mDrawable;
 	private Paint mPaint;
+	private Paint mPaintInner;
+	private int mColor;
 	private int mRadius;
 	private int mXDown;
 	private int mYDown;
 	private boolean mIsRipple;
-	private int mDiagonal;
+	private int mMaxRadius;
 	private int mWidth;
 	private int mHeight;
 	private int mDuration;
@@ -34,6 +39,9 @@ public class RippleDrawableComp extends Drawable {
 		mPaint.setColor(aColor);
 		mPaint.setAlpha(aAlpha);
 		mPaint.setAntiAlias(true);
+		mPaintInner = new Paint();
+		mPaintInner.setColor(Color.WHITE);
+		mColor = aColor;
 		mRadius = aInitialRadius;
 		mDuration = aDuration;
 		mDrawable = aDrawable;
@@ -60,11 +68,7 @@ public class RippleDrawableComp extends Drawable {
 	{
 		int width = aBounds.right;
 		int height = aBounds.bottom;
-		if(width == height) {
-			mDiagonal = (int)(Math.sqrt(2) * (double)width);
-		} else {
-			mDiagonal = (int)(Math.sqrt((width * width) + (height * height)));
-		}
+		if(width < height) {mMaxRadius = width;} else {mMaxRadius = height;}
 		mDrawable.setBounds(aBounds);
 		
 		View view = mWeakView.get();
@@ -76,7 +80,7 @@ public class RippleDrawableComp extends Drawable {
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
 					int downX = (int)event.getX();
 					int downY = (int)event.getY();
-					ripple(downX, downY, mDiagonal, mDuration);
+					ripple(downX, downY, mMaxRadius, mDuration);
 				} else if(event.getAction() == MotionEvent.ACTION_UP) {
 					v.performClick();
 				}
@@ -97,18 +101,21 @@ public class RippleDrawableComp extends Drawable {
 	
 	public void ripple(int aX, int aY, int aSize, int aDuration)
 	{
+		RadialGradient rg = new RadialGradient(aX, aY, mRadius, Color.TRANSPARENT, mColor, TileMode.CLAMP);
+		mPaint.setShader(rg);
+		
 		mIsRipple = true;
 		mXDown = aX;
 		mYDown = aY;
 		mRadius = 0;
-		ValueAnimator animation = ValueAnimator.ofInt(mRadius, mDiagonal);
+		ValueAnimator animation = ValueAnimator.ofInt(mRadius, mMaxRadius);
 		animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator aValueAnimator) 
 			{
 				int radius = (Integer)aValueAnimator.getAnimatedValue();
 				mRadius = radius;
-				if(mDiagonal == radius) {mIsRipple = false;}
+				if(mMaxRadius == radius) {mIsRipple = false;}
 				invalidateSelf();
 			}
 		});
@@ -123,6 +130,7 @@ public class RippleDrawableComp extends Drawable {
 		if(mIsRipple) {
 			mDrawable.draw(aCanvas);
 			aCanvas.drawCircle(mXDown, mYDown, mRadius, mPaint);
+			//aCanvas.drawCircle(mXDown, mYDown, mRadius - 20, mPaintInner);
 		} else {
 			mDrawable.draw(aCanvas);
 		}
