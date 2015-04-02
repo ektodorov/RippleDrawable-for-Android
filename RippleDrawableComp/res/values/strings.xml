@@ -4,5 +4,6 @@
     <string name="app_name">RippleDrawableComp</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="tap_here">Tap here</string>
 
 </resources>
