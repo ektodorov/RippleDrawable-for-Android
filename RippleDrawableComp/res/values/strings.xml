@@ -2,8 +2,22 @@
 <resources>
 
     <string name="app_name">RippleDrawableComp</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="tap_here">Tap here</string>
+    <string name="color">Color</string>
+    <string name="alpha">Alpha</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="blue">Blue</string>
+    <string name="initial_radius">Initial radius</string>
+    <string name="duration">Duration</string>
+    <string name="use_gradient">Use gradient</string>
+    <string name="use_fadeout">Use fadeout</string>
+    <string name="apply_settings">Apply Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="settings">Settings</string>
+    <string name="error">Error</string>
+    <string name="message_error">One of the values you inputed is not a valid setting.\nPlease corrent and try again.</string>
+    <string name="ok">OK</string>
 
 </resources>
