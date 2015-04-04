@@ -3,14 +3,10 @@ package com.blogspot.techzealous.rippledrawablecomp;
 import java.lang.ref.WeakReference;
 
 import android.animation.ValueAnimator;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.Shader.TileMode;
@@ -27,7 +23,6 @@ public class RippleDrawableComp extends Drawable {
 	private WeakReference<View> mWeakView;
 	private Drawable mDrawable;
 	private Paint mPaint;
-	private Paint mPaintOverlay;
 	private int mColor;
 	private int mRadius;
 	private int mXDown;
@@ -40,9 +35,6 @@ public class RippleDrawableComp extends Drawable {
 	private int mAlpha;
 	private boolean mIsUseGradient;
 	private boolean mIsUseFadeOut;
-	
-	private Bitmap mBitmapOverlay;
-	private Canvas mCanvasOverlay;
 	
 	/** 
 	 * Creates a RippleDrawableComp
@@ -62,9 +54,6 @@ public class RippleDrawableComp extends Drawable {
 		mPaint.setColor(aColor);
 		mPaint.setAlpha(aAlpha);
 		mPaint.setAntiAlias(true);
-		mPaintOverlay = new Paint();
-		mPaintOverlay.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-		mCanvasOverlay = new Canvas();
 		mColor = aColor;
 		mRadius = aInitialRadius;
 		mDuration = aDuration;
@@ -91,9 +80,6 @@ public class RippleDrawableComp extends Drawable {
 				mWidth = view.getWidth();
 				mHeight = view.getHeight();
 				setBounds(new Rect(0, 0, mWidth, mHeight));
-				
-				mBitmapOverlay = Bitmap.createBitmap(mWidth, mHeight, Config.ARGB_8888);
-				mCanvasOverlay.setBitmap(mBitmapOverlay);
 			}
 		});
 	}
@@ -108,7 +94,7 @@ public class RippleDrawableComp extends Drawable {
 		int height = aBounds.bottom;
 		//set the mMaxRadius as the shorter or longer side of the view
 		if(width > height) {mMaxRadius = width;} else {mMaxRadius = height;}
-		mDrawable.setBounds(aBounds);
+		if(mDrawable != null) {mDrawable.setBounds(aBounds);}
 		
 		View view = mWeakView.get();
 		if(view == null) {return;}
@@ -188,10 +174,10 @@ public class RippleDrawableComp extends Drawable {
 	public void draw(Canvas aCanvas) 
 	{
 		if(mIsRipple) {
-			mDrawable.draw(aCanvas);
+			if(mDrawable != null) {mDrawable.draw(aCanvas);}
 			aCanvas.drawCircle(mXDown, mYDown, mRadius, mPaint);
 		} else {
-			mDrawable.draw(aCanvas);
+			if(mDrawable != null) {mDrawable.draw(aCanvas);}
 		}
 	}
 

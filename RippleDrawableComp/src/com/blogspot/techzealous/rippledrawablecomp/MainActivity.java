@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 		mButton2.setBackgroundDrawable(rippleButton2);
 		
 		RippleDrawableComp rippleRelativeLayout = new RippleDrawableComp(color, alpha, radius, duration, 
-				getResources().getDrawable(R.drawable.ic_launcher), mRelativeLayout, isUseGradient, isUseFadeOut);
+				null, mRelativeLayout, isUseGradient, isUseFadeOut);
 		rippleRelativeLayout.init();
 		mRelativeLayout.setBackgroundDrawable(rippleRelativeLayout);
 		

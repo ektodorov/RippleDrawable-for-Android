@@ -40,7 +40,7 @@
                 android:text="@string/tap_here" />
 
             <RelativeLayout
-                android:id="@+id/relativeLayout1"
+                android:id="@+id/relativeLayoutParent1"
                 android:layout_width="200dp"
                 android:layout_height="170dp"
                 android:layout_below="@id/textView1" >
@@ -48,7 +48,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="vertical" >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -61,14 +61,32 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/app_name" />
+                    
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_launcher"
+                        android:contentDescription="@string/app_name" />
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Some very long text. Some very long text. Some very long text. Some very long text."
+                        android:background="@color/orange" />
                 </LinearLayout>
+                
+                <RelativeLayout
+                	android:id="@+id/relativeLayout1"
+                	android:layout_width="200dp"
+                	android:layout_height="170dp" />
             </RelativeLayout>
 
             <Button
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_below="@id/relativeLayout1"
+                android:layout_below="@id/relativeLayoutParent1"
                 android:text="@string/tap_here" />
         </RelativeLayout>
     </LinearLayout>
