@@ -1,5 +1,6 @@
 package com.blogspot.techzealous.rippledrawablecomp;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +22,7 @@ public class MainActivity extends Activity {
 	private Button mButton3;
 	
 	private SharedPreferences mPrefs;
-		
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,8 +33,11 @@ public class MainActivity extends Activity {
 		mButton2 = (Button)findViewById(R.id.button2);
 		mRelativeLayout = (RelativeLayout)findViewById(R.id.relativeLayout1);
 		mButton3 = (Button)findViewById(R.id.button3);
-		
-		getActionBar().hide();
+
+		ActionBar actionBar = getActionBar();
+		if(actionBar != null) {
+			actionBar.hide();
+		}
 		mPrefs = getSharedPreferences(ConstantsRD.PREFS_FILENAME, Context.MODE_PRIVATE);
 		
 		mButtonSettings.setOnClickListener(new OnClickListener() {
@@ -42,7 +46,7 @@ public class MainActivity extends Activity {
 				Intent i = new Intent(MainActivity.this, SettingsActivity.class);
 				startActivity(i);
 			}
-		});		
+		});
 	}
 	
 	@Override
@@ -60,12 +64,12 @@ public class MainActivity extends Activity {
 		int duration = mPrefs.getInt(ConstantsRD.PREF_DURATION, 1000);
 		boolean isUseGradient = mPrefs.getBoolean(ConstantsRD.PREF_IS_USE_GRADIENT, false);
 		boolean isUseFadeOut = mPrefs.getBoolean(ConstantsRD.PREF_IS_USE_FADEOUT, false);
-		
-		RippleDrawableComp rippleTextView = new RippleDrawableComp(color, alpha, radius, duration, 
+
+		RippleDrawableComp rippleTextView = new RippleDrawableComp(color, alpha, radius, duration,
 				getResources().getDrawable(R.drawable.ic_launcher), mTextView, isUseGradient, isUseFadeOut);
 		rippleTextView.init();
 		mTextView.setBackgroundDrawable(rippleTextView);
-		
+
 		RippleDrawableComp rippleButton2 = new RippleDrawableComp(color, alpha, radius, duration, 
 				getResources().getDrawable(R.drawable.xml_rect_green), mButton2, isUseGradient, isUseFadeOut);
 		rippleButton2.init();

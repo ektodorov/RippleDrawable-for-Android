@@ -1,7 +1,5 @@
 package com.blogspot.techzealous.rippledrawablecomp;
 
-import java.lang.ref.WeakReference;
-
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,6 +12,8 @@ import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+
+import java.lang.ref.WeakReference;
 
 public class RippleDrawableComp extends Drawable {
 
@@ -38,14 +38,14 @@ public class RippleDrawableComp extends Drawable {
 	
 	/** 
 	 * Creates a RippleDrawableComp
-	 * @param int aColor - color to use for the ripple effect
-	 * @param int aAlpha - alpha to use for the color effect
-	 * @param int aInitialRadius - initial radius to use for the ripple effect. How big should the first circle drawn.
-	 * @param int aDuration - duration that the ripple effect will have
-	 * @param Drawable aDrawable - drawable to use for background of the view
-	 * @param View aView - the view to which we are adding the RippleDrawableComp. This RippleDrawableComp object holds a weak reference to this view.
-	 * @param boolean aIsUseGradient - if the ripple effect is going to have a RadialGradient filter for the ripple
-	 * @param boolean aIsUseFadeOut - if the ripple effect should have a fading effect added to it
+	 * @param aColor color to use for the ripple effect
+	 * @param aAlpha alpha to use for the color effect
+	 * @param aInitialRadius initial radius to use for the ripple effect. How big should the first circle drawn.
+	 * @param aDuration duration that the ripple effect will have
+	 * @param aDrawable drawable to use for background of the view
+	 * @param aView the view to which we are adding the RippleDrawableComp. This RippleDrawableComp object holds a weak reference to this view.
+	 * @param aIsUseGradient if the ripple effect is going to have a RadialGradient filter for the ripple
+	 * @param aIsUseFadeOut if the ripple effect should have a fading effect added to it
 	 */
 	public RippleDrawableComp(int aColor, int aAlpha, int aInitialRadius, int aDuration, Drawable aDrawable, View aView, 
 			boolean aIsUseGradient, boolean aIsUseFadeOut)
@@ -127,14 +127,14 @@ public class RippleDrawableComp extends Drawable {
 	
 	/** 
 	 * Starts the ripple effect.
-	 * @param int aX - x coordinate (relative to the RippleDrawableComp's rect) of center for the ripple.
-	 * @param int aY - y coordinate (relative to the RippleDrawableComp's rect) of center for the ripple.
-	 * @param int aSize - the maximum size the ripple effect should draws to.
-	 * @param int aDuration - duration for the ripple effect. */
+	 * @param aX x coordinate (relative to the RippleDrawableComp's rect) of center for the ripple.
+	 * @param aY y coordinate (relative to the RippleDrawableComp's rect) of center for the ripple.
+	 * @param aSize the maximum size the ripple effect should draws to.
+	 * @param aDuration duration for the ripple effect. */
 	public void ripple(int aX, int aY, final int aSize, int aDuration)
 	{
 		if(mIsUseGradient) {
-			RadialGradient rg = new RadialGradient(aX, aY, mRadius, Color.TRANSPARENT, mColor, TileMode.CLAMP);
+			RadialGradient rg = new RadialGradient(aX, aY, aSize, mColor, Color.TRANSPARENT, TileMode.CLAMP);
 			mPaint.setShader(rg);
 		}
 		mPaint.setAlpha(mAlpha);
@@ -151,16 +151,16 @@ public class RippleDrawableComp extends Drawable {
 			{
 				int radius = (Integer)aValueAnimator.getAnimatedValue();
 				mRadius = radius;
-				if(aSize == radius) {mIsRipple = false;}
+				//if(aSize == radius) {mIsRipple = false;}
 				
 				/* Decrease the mPaint's alpha when we are at 70% of the size of the loop. */
 				//we are saving us *100 and /100 when calculating the percents (no need to multiply by 100, just to then delete by 100)
 				if(mIsUseFadeOut) {
-					float percent = 1.0f - ((float)radius / (float)mMaxRadius);
-					if((int)percent < kThresholdStartFade) {
+					float percent = 1.0f - ((float)radius / (float)aSize);
+//					if((int)percent < kThresholdStartFade) {
 						int alpha = (int)(mAlpha * percent);
 						mPaint.setAlpha(alpha);
-					}
+//					}
 				}
 				
 				invalidateSelf();
